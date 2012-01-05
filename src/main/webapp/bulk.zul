@@ -1,0 +1,29 @@
+<?page title="Monitors List" contentType="text/html;charset=UTF-8"?>
+<window title="Monitors Bulk" border="normal" width="100%" height="100%" apply="dridco.jmx.zk.BulkListingController">
+	<div height="50px" align="center">
+		<combobox id="monitorCombobox" autodrop="true" autocomplete="true" mold="rounded" />
+		<space width="100px" />
+		<combobox id="settingCombobox" autodrop="true" autocomplete="true" mold="rounded" />
+	</div>
+	<div id="settingInputDiv" height="30px" align="center" visible="false">
+		<textbox id="settingTextbox" />
+		<button label="Default" id="showDefaultButton" />
+		<button label="Recommended" id="showRecommendedButton" />
+	</div>
+	<div width="100%" align="center" >
+		<space height="30px" />
+		<grid id="monitorsGrid" width="40%">
+	        <columns>
+	            <column width="10%" align="center" >
+	            	<checkbox id="selectAll" />
+	            </column>
+	            <column label="Monitor" width="50%"/>
+	            <column label="Value" width="40%"/>
+	        </columns>
+	    </grid>
+		<button id="applySettingButton" label="Apply" />
+	</div>
+	<div id="actionsDiv" width="100%" align="center" visible="false">
+		<div id="actionsContainer" width="100%" align="center"></div>
+	</div>
+</window>

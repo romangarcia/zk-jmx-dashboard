@@ -1,0 +1,28 @@
+<?page title="Monitors List" contentType="text/html;charset=UTF-8"?>
+<window title="Monitors List" border="normal" width="100%" apply="dridco.jmx.zk.ListingController">
+	<div height="50px" align="center">
+		<combobox id="monitorCombobox" autodrop="true" autocomplete="true" mold="rounded" />
+	</div>
+	<div id="settingsDiv" width="100%" align="center" visible="false">
+		<separator bar="true" width="70%"></separator>
+		<label style="font-size:24px">Settings</label>
+		<div id="settingsContainer" width="80%" align="center" ></div>
+	</div>
+	<div id="actionsDiv" width="100%" align="center" visible="false">
+		<space height="30px" />
+		<separator bar="true" width="60%"></separator>
+		<label style="font-size:24px">Actions</label>
+		<div id="actionsContainer" width="100%" align="center"></div>
+	</div>
+	<div width="100%" align="center" >
+		<space height="30px" />
+		<grid id="monitorsGrid" width="40%">
+	        <columns>
+	            <column width="10%" align="center" >
+	            	<checkbox id="selectAll"></checkbox>
+	            </column>
+	            <column label="Monitor" width="90%"/>
+	        </columns>
+	    </grid>
+	</div>
+</window>

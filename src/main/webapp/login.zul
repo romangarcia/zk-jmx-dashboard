@@ -1,0 +1,32 @@
+<?page title="Dashboard Login" contentType="text/html;charset=UTF-8"?>
+<window id="loginWin" border="normal" width="100%" height="100%" title="Dashboard" 
+		apply="dridco.jmx.zk.LoginController">
+	<borderlayout>
+		<center>
+			<vbox align="center" width="100%" pack="center" >
+				<div><label style="font-size: 32px">Dridco Monitor Dashboard</label></div>
+				<div id="loginDiv" width="400px">
+					<grid>
+						<rows>
+							<row>
+								Name :
+								<textbox id="usernameText" width="200px" value="" />
+							</row>
+							<row>
+								Password :
+								<textbox id="passwordText" width="200px" type="password" />
+							</row>
+						</rows>
+					</grid>			
+					<hbox pack="center" width="100%" height="100px">
+						<button id="loginButton" label="Login" />
+					</hbox>
+					<div >
+						<label id="messageLabel" style="color:red"/>
+					</div>
+				</div>
+			</vbox>
+		</center>
+	</borderlayout>
+	
+</window>

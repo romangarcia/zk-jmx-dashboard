@@ -1,0 +1,19 @@
+<?page title="Dridco Infra Dashboard"?>
+<window title="Dridco Infra Dashboard" border="normal" width="100%" height="100%"
+ 	apply="dridco.jmx.zk.DashboardController">
+	<portallayout id="portalLayout" maximizedMode="whole">
+<!-- 		<portalchildren> -->
+<!-- 			<panel title="Test Panel"> -->
+<!-- 				<panelchildren width="30%"> -->
+<!-- 					<label>Something!</label> -->
+<!-- 					<tabbox> -->
+<!-- 						<tabs visible="true"> -->
+<!-- 							<tab label="First"> -->
+<!-- 							</tab> -->
+<!-- 						</tabs> -->
+<!-- 					</tabbox> -->
+<!-- 				</panelchildren> -->
+<!-- 			</panel> -->
+<!-- 		</portalchildren> -->
+    </portallayout>
+</window>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/src/test/scala"/>
+	</contentEntry>
+	<lib name="scalatest_2.9.1-1.6.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/project/lib/scalatest_2.9.1-1.6.1.jar!/"/>
+	</lib>
+	<lib name="junit-4.8.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/project/lib/junit-4.8.2.jar!/"/>
+	</lib>
+</component>

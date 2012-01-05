@@ -27,10 +27,16 @@
 		<servlet-name>auEngine</servlet-name>
 		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
 	</servlet>
+	<!-- REST Status Servlets -->
 	<servlet>
 		<description>Monitor Status REST Servlet</description>
-		<servlet-name>statusServlet</servlet-name>
-		<servlet-class>dridco.jmx.rest.JmxMonitorServlet</servlet-class>
+		<servlet-name>singleStatusServlet</servlet-name>
+		<servlet-class>dridco.jmx.rest.CheckSingleMonitorServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>Monitor ALL Status REST Servlet</description>
+		<servlet-name>allStatusServlet</servlet-name>
+		<servlet-class>dridco.jmx.rest.CheckAllMonitorsServlet</servlet-class>
 	</servlet>
 
 	<filter>
@@ -51,8 +57,12 @@
 		<url-pattern>/zkau/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>statusServlet</servlet-name>
-		<url-pattern>/rest/status</url-pattern>
+		<servlet-name>allStatusServlet</servlet-name>
+		<url-pattern>/status/all</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>singleStatusServlet</servlet-name>
+		<url-pattern>/status/single</url-pattern>
 	</servlet-mapping>
 
 <!-- 	<filter-mapping> -->

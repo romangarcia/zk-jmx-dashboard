@@ -26,7 +26,7 @@ abstract class JmxMonitor(val id:String) extends Logging {
     def information: Map[String, Any]
 	
 	// [internal] stats actor, which reads stats using underlying JMX connection
-	private val statsActor = new StatsActor(this).start()
+//	private val statsActor = new StatsActor(this).start()
 	
 	// to invoke a given actionID. Could also use anAction.invoke()
     def invoke(actionId:String) {
@@ -46,9 +46,9 @@ abstract class JmxMonitor(val id:String) extends Logging {
     }
     
     // to subscribe as a listener for this monitor stats actor
-    def subscribeStats(listener:StatsListener) {
-        statsActor ! ('subscribe, listener)
-    }
+//    def subscribeStats(listener:StatsListener) {
+//        statsActor ! ('subscribe, listener)
+//    }
     
     
 }

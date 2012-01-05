@@ -7,11 +7,9 @@ import dridco.jmx.monitor.JmxMonitorConnector
 
 
 object DashboardSystem extends Logging {
-
     val userManager = new UserManager
-
-    val connectionManager = new ConnectionManager
-    
+    val config = MonitorsConfig("/connectors.properties")
+    val connectionManager = new ConnectionManager(config)
 }
 
 object DashboardWebSystem {

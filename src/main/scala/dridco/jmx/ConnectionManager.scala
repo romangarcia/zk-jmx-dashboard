@@ -5,11 +5,9 @@ import scala.io.Source
 import dridco.jmx.monitor.JmxMonitorConnector
 import monitor.JmxMonitor
 
-class ConnectionManager extends Logging {
+class ConnectionManager(config:MonitorsConfig) extends Logging {
 
     private val locators = MonitorLocators.DEFAULT
-    
-    private val config = MonitorsConfig("/connectors.properties")
     
     def monitors():Seq[JmxMonitor] = {
         

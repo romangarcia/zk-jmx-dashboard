@@ -8,7 +8,7 @@ import dridco.jmx.monitor.MonitorConnectionSpec
 import dridco.jmx.status.MonitorStatusApp
 import dridco.jmx.status.MonitorStatusException
 
-class JmxMonitorServlet extends HttpServlet {
+class CheckSingleMonitorServlet extends BaseMonitorServlet {
 
     override def doGet(req:HttpServletRequest, resp:HttpServletResponse) {
         implicit val request = req
@@ -41,11 +41,4 @@ class JmxMonitorServlet extends HttpServlet {
         
     }
     
-    def param(name:String)(implicit req:HttpServletRequest):Option[String] = {
-        Option(req.getParameter(name))
-    }
-    
-    def fail(msg:String)(implicit resp:HttpServletResponse) = {
-        throw new IllegalStateException(msg)
-    }
 }

@@ -32,7 +32,8 @@ object MonitorStatusApp extends App {
 		var status = ""
 		try {
 			val statusApp = new MonitorStatusApp()
-			status = statusApp.reportStatus(args(JMX_URL_POS), auth, mbean)
+			val connSpec = MonitorConnectionSpec(args(JMX_URL_POS), auth, Seq(mbean), true)
+			status = statusApp.reportStatus( connSpec )
 		} catch {
 		    case e =>
 		        status = "FAILURE: " + e.getMessage()
@@ -72,23 +73,23 @@ class MonitorStatusApp {
     
     val SUCCESS = "OK"
 
-    def reportStatus(jmxUrl:String, auth:Option[JmxCredentials], mbean:String) = {
+    def reportStatus(connSpec:MonitorConnectionSpec) = {
         
-    	val connSpec = new MonitorConnectionSpec(jmxUrl, auth, Seq())
-    	val statusReporter = mbean match {
-    	    case "sensei" => new SenseiStatus()
-    	    case "zookeeper" => new ZookeeperStatus()
-    	    case "kafka" => new KafkaStatus()
+        val mbean = connSpec.monitors(0)
+
+        val statusReporter = mbean match {
+	    	case "sensei" => new SenseiStatus()
+	    	case "zookeeper" => new ZookeeperStatus()
+	    	case "kafka" => new KafkaStatus()
     	}
     	
     	val status = statusReporter.reportResult(connSpec)
-    	
-    	if (status.valid) {
-    	    SUCCESS
-    	} else {
-    	    throw new MonitorStatusException(status.message.get)
-    	}
-	
+    			
+		if (status.valid) {
+			SUCCESS
+		} else {
+			throw new MonitorStatusException(status.message.get)
+		}
             
     }
 }

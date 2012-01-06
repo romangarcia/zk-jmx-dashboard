@@ -11,7 +11,7 @@ import com.sun.java.util.jar.pack.PropMap
 import javax.management.MBeanServerConnection
 import javax.management.Query
 
-case class MonitorConnectionSpec(val url:String, credentials:Option[JmxCredentials], monitors:Seq[String]) {
+case class MonitorConnectionSpec(val url:String, credentials:Option[JmxCredentials], monitors:Seq[String], enabled:Boolean = true) {
     override def toString() = {
         val username = if (credentials.isDefined) " [" + credentials.get.username + "]" else ""
         url + username

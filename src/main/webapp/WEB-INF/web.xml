@@ -29,14 +29,9 @@
 	</servlet>
 	<!-- REST Status Servlets -->
 	<servlet>
-		<description>Monitor Status REST Servlet</description>
-		<servlet-name>singleStatusServlet</servlet-name>
-		<servlet-class>dridco.jmx.rest.CheckSingleMonitorServlet</servlet-class>
-	</servlet>
-	<servlet>
 		<description>Monitor ALL Status REST Servlet</description>
-		<servlet-name>allStatusServlet</servlet-name>
-		<servlet-class>dridco.jmx.rest.CheckAllMonitorsServlet</servlet-class>
+		<servlet-name>statusServlet</servlet-name>
+		<servlet-class>dridco.jmx.rest.CheckMonitorsServlet</servlet-class>
 	</servlet>
 
 	<filter>
@@ -57,12 +52,8 @@
 		<url-pattern>/zkau/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>allStatusServlet</servlet-name>
-		<url-pattern>/status/all</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>singleStatusServlet</servlet-name>
-		<url-pattern>/status/single</url-pattern>
+		<servlet-name>statusServlet</servlet-name>
+		<url-pattern>/status</url-pattern>
 	</servlet-mapping>
 
 <!-- 	<filter-mapping> -->

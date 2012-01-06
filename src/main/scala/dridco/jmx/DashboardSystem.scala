@@ -4,11 +4,12 @@ import java.io.File
 import dridco.jmx.monitor.MonitorLocators
 import dridco.jmx.monitor.MonitorsConfig
 import dridco.jmx.monitor.JmxMonitorConnector
+import dridco.jmx.monitor.XmlMonitorsConfig
 
 
 object DashboardSystem extends Logging {
     val userManager = new UserManager
-    val config = MonitorsConfig("/connectors.properties")
+    val config = XmlMonitorsConfig(getClass.getResourceAsStream("/connectors.xml"))
     val connectionManager = new ConnectionManager(config)
 }
 

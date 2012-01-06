@@ -20,7 +20,6 @@ class CheckMonitorsServlet extends BaseMonitorServlet {
         val errorMsg = new StringBuilder
         
         val nameOpt = param("monitor")
-
         val specs = filterSpecs(nameOpt)
 
         specs.foreach { spec =>
@@ -35,9 +34,13 @@ class CheckMonitorsServlet extends BaseMonitorServlet {
         
         if (errorMsg.isEmpty) 
             out.print(status)
-        else 
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, errorMsg.toString)
-        
+        else {
+        	val errorMsgStr = errorMsg.toString
+            out.print(errorMsgStr)
+            resp.addHeader("MONITOR-FAILURE-MESSAGES", errorMsgStr)
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND)
+//            resp.sendError(HttpServletResponse.SC_NOT_FOUND, errorMsg.toString)
+        }
     }
     
     private def filterSpecs(nameOpt:Option[String]) = {

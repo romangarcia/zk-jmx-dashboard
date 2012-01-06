@@ -75,9 +75,9 @@ class MonitorStatusApp {
 
     def reportStatus(connSpec:MonitorConnectionSpec) = {
         
-        val mbean = connSpec.monitors(0)
+        val monitor = connSpec.monitors(0)
 
-        val statusReporter = mbean match {
+        val statusReporter = monitor match {
 	    	case "sensei" => new SenseiStatus()
 	    	case "zookeeper" => new ZookeeperStatus()
 	    	case "kafka" => new KafkaStatus()
@@ -88,9 +88,16 @@ class MonitorStatusApp {
 		if (status.valid) {
 			SUCCESS
 		} else {
-			throw new MonitorStatusException(status.message.get)
-		}
-            
+		    val infoMsg = "[monitor: " + monitor + ", url: " + connSpec.url + "]"
+		    if (status.message.isDefined) {
+			    val statusMsg = status.message.get
+	    		val completeMsg = statusMsg + " " + infoMsg  
+				throw new MonitorStatusException(completeMsg)
+			} else {
+				throw new MonitorStatusException("Unknown status failure" + infoMsg)
+			}
+    	}    
+    	
     }
 }
 

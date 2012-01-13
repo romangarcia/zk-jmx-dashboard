@@ -4,7 +4,7 @@ import dridco.jmx.monitor.MonitorConnectionSpec
 
 class SenseiStatus extends StatusReporter {
 
-	val SENSEI_SERVER_OBJECT_NAME = "com.senseidb:name=sensei-server-1"
+	val SENSEI_SERVER_OBJECT_NAME_PREFIX = "com.senseidb:name="
     val DATA_PROVIDER_OBJECT_NAME = "com.senseidb:indexing-manager=stream-data-provider"
         
     val SENSEI_AVAILABLE = "senseiAvailable"
@@ -14,15 +14,19 @@ class SenseiStatus extends StatusReporter {
     def report(connSpec:MonitorConnectionSpec):Map[String, Any] = {
 
         withConnection(connSpec) { conn => 
-        	val senseiAvailable = conn.getAttributeValue[Boolean](SENSEI_SERVER_OBJECT_NAME, "Available")
-        	var dataProviderStatus = conn.getAttributeValue[String](DATA_PROVIDER_OBJECT_NAME, "Status")
-        	dataProviderStatus = dataProviderStatus substring( dataProviderStatus.indexOf(" : ") + 3 )
-        	val dataProviderEventCount = conn.getAttributeValue[Long](DATA_PROVIDER_OBJECT_NAME, "EventCount")
-        	
-        	Map(SENSEI_AVAILABLE -> senseiAvailable,
-    	        DATA_PROVIDER_STATUS -> dataProviderStatus, 
-    	        DATA_PROVIDER_EVENT_COUNT -> dataProviderEventCount
-    	        ) 
+            val nodes = conn.lookupObjectNameKeys(SENSEI_SERVER_OBJECT_NAME_PREFIX + "*")
+            
+            val nodeName = nodes.get("name").get
+            
+    		val senseiAvailable = conn.getAttributeValue[Boolean](SENSEI_SERVER_OBJECT_NAME_PREFIX + nodeName, "Available")
+    		var dataProviderStatus = conn.getAttributeValue[String](DATA_PROVIDER_OBJECT_NAME, "Status")
+    		dataProviderStatus = dataProviderStatus substring( dataProviderStatus.indexOf(" : ") + 3 )
+            val dataProviderEventCount = conn.getAttributeValue[Long](DATA_PROVIDER_OBJECT_NAME, "EventCount")
+            
+            Map(SENSEI_AVAILABLE -> senseiAvailable,
+	    		DATA_PROVIDER_STATUS -> dataProviderStatus, 
+	    		DATA_PROVIDER_EVENT_COUNT -> dataProviderEventCount
+    		) 
         }
         
     } 

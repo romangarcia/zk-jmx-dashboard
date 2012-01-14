@@ -3,13 +3,15 @@ package dridco.jmx.status
 import dridco.jmx.monitor.JmxMonitorConnector
 import dridco.jmx.monitor.MonitorConnectionSpec
 
-case class StatusResult(valid:Boolean, message:Option[String])
+case class StatusRequest(connectionSpec:MonitorConnectionSpec, properties:Map[String, String] = Map())
+
+case class StatusResult(valid:Boolean, messages:List[String])
 
 trait StatusReporter {
 
-    def report(connSpec:MonitorConnectionSpec):Map[String, Any]
+    def report(request:StatusRequest):Map[String, Any]
     
-    def reportResult(connSpec:MonitorConnectionSpec):StatusResult
+    def reportResult(request:StatusRequest):StatusResult
     
     def withConnection(connSpec:MonitorConnectionSpec)(f: JmxMonitorConnector => Map[String, Any]) = {
         
@@ -24,18 +26,17 @@ trait StatusReporter {
         }
     } 
     
-	def checkResult(connSpec:MonitorConnectionSpec)(check:Map[String, Any] => (Boolean, String)) = {
+	def checkResult(request:StatusRequest)(check:Map[String, Any] => (Boolean, List[String])) = {
 	    
 	    try {
-	        val values = report(connSpec)
-	        val (valid, msg) = check(values)
-	        val msgOpt = if (msg.isEmpty) None else Some(msg.toString)
-	        StatusResult(valid, msgOpt)
+	        val values = report(request)
+	        val (valid, msgs) = check(values)
+	        StatusResult(valid, msgs)
 	    } catch {
 	        case ise:IllegalStateException => 
-		        StatusResult(false, Some("Connection error: " + ise.getMessage))
+		        StatusResult(false, List("Connection error: " + ise.getMessage))
 	        case e => 
-	        	StatusResult(false, Some("Unknown error: " + e.getMessage))
+	        	StatusResult(false, List("Unknown error: " + e.getMessage))
 	    }
 	}    
 }

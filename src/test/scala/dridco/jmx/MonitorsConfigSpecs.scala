@@ -10,17 +10,19 @@ import dridco.jmx.monitor.MonitorsConfig
 class MonitorsConfigSpecs extends WordSpec with ShouldMatchers with TypeMatchers {
 	val propContent = 
 			"""
-			connector = test-local
-			connector.test-local.url = localhost:9999
-			connector.test-local.monitors = sensei, zookeeper, kafka
-			connector.test-local.username = 
-			connector.test-local.password =                     
-			"""                
+<connectors>
+	<property name="clusterName" value="testCluster" />
+	
+	<connector url="localhost:18888" type="zookeeper" />
+	<connector url="localhost:18889" type="kafka" />
+	<connector url="localhost:18890" type="sensei" />
+</connectors>
+	    """                
 
-    "A MonitorsConfig" that {
+    "A MonitorsConfig" when {
         "given a configuration" when {
             "declares a single connector with two monitors" should {
-        		val config = MonitorsConfig(Source.fromString(propContent))
+        		val config = MonitorsConfig(getClass.getResourceAsStream("/connectors.xml"))
         		
 				"create Not Empty connectors" in {
         			config.connectorSpecs should not be ('empty)

@@ -2,6 +2,7 @@ package dridco.jmx.status
 
 import scala.collection.mutable.MapBuilder
 import dridco.jmx.monitor.MonitorConnectionSpec
+import scala.collection.mutable.ListBuffer
 
 class KafkaStatus extends StatusReporter {
     val KAFKA_FLUSH_OBJ_NAME = "kafka:type=kafka.LogFlushStats"
@@ -10,9 +11,9 @@ class KafkaStatus extends StatusReporter {
         
     val KAFKA_FLUSHES_PER_SECOND = "kafkaFlushesPerSecond"
 
-    def report(connSpec:MonitorConnectionSpec):Map[String, Any] = {
+    def report(request:StatusRequest):Map[String, Any] = {
         
-        withConnection(connSpec) { conn =>
+        withConnection(request.connectionSpec) { conn =>
             val logNames = conn.lookupObjectNamesForClass(KAFKA_OBJECT_QUERY, KAFKA_LOGS_CLASSNAME)
 	        var offsets = Map[String, String]()
             for (logName <- logNames) {
@@ -30,15 +31,15 @@ class KafkaStatus extends StatusReporter {
         
     }
     
-	def reportResult(connSpec:MonitorConnectionSpec):StatusResult = {
+	def reportResult(request:StatusRequest):StatusResult = {
 
-	    checkResult(connSpec) { values =>
-	        
-	    	val msg = new StringBuilder
+	    checkResult(request) { values =>
+	    	var msgs = new ListBuffer[String]
+	    	
 	    	val isFlushing = values.getOrElse(KAFKA_FLUSHES_PER_SECOND, 0.0).asInstanceOf[Double] > 0.0 
-	    	if (!isFlushing) msg append "Kafka Node is not FLUSHING\n"
+	    	if (!isFlushing) msgs += "Kafka Node is not FLUSHING"
 	    
-	    	(isFlushing, msg.toString)
+	    	(isFlushing, msgs.toList)
 		    
 	    }
 	    

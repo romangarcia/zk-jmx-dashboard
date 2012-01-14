@@ -1,5 +1,6 @@
 package dridco.jmx.status
 import dridco.jmx.monitor.MonitorConnectionSpec
+import scala.collection.mutable.ListBuffer
 
 class ZookeeperStatus extends StatusReporter {
     val ZOO_DOMAIN_NAME = "org.apache.ZooKeeperService"
@@ -9,9 +10,9 @@ class ZookeeperStatus extends StatusReporter {
     val ZOOKEEPER_QUORUM_SIZE = "zookeeperQuorumSize"
     val ZOOKEEPER_NODE_STATE = "zookeeperState"
         
-    def report(connSpec:MonitorConnectionSpec):Map[String, Any] = {
+    def report(request:StatusRequest):Map[String, Any] = {
         
-        withConnection(connSpec) { conn =>
+        withConnection(request.connectionSpec) { conn =>
             
 		    val keysMap = conn.lookupObjectNameKeys(ZOO_DOMAIN_NAME + ":*")
 		    
@@ -40,18 +41,19 @@ class ZookeeperStatus extends StatusReporter {
         
     } 
     
-	def reportResult(connSpec:MonitorConnectionSpec):StatusResult = {
+	def reportResult(request:StatusRequest):StatusResult = {
 
-	    checkResult(connSpec) { values =>
-		    val msg = new StringBuilder
+	    checkResult(request) { values =>
+		    var msg = new ListBuffer[String]
+		    
 		    val nodeName = values.getOrElse(ZOOKEEPER_NODE_NAME, "Unknown")
 		    
 		    val availableValue = values.getOrElse(ZOOKEEPER_NODE_STATE, "NOT_RUNNING")
 		    val isAvailable = availableValue == "RUNNABLE" || availableValue == "TIMED_WAITING"
 		        
-		    if (!isAvailable) msg append "Zookeeper Node " + nodeName + " is not AVAILABLE\n"
+		    if (!isAvailable) msg += ("Zookeeper Node " + nodeName + " is not AVAILABLE")
 
-		    (isAvailable, msg.toString)
+		    (isAvailable, msg.toList)
 	    }
 	    
 	}

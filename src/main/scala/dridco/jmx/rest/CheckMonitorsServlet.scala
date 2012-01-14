@@ -6,6 +6,9 @@ import dridco.jmx.status.MonitorStatusApp
 import javax.servlet.http.HttpServletResponse
 import dridco.jmx.DashboardSystem
 import dridco.jmx.monitor.MonitorConnectionSpec
+import DashboardSystem._
+import dridco.jmx.monitor.MonitorsConfig
+import dridco.jmx.status.StatusRequest
 
 class CheckMonitorsServlet extends BaseMonitorServlet {
 
@@ -20,11 +23,11 @@ class CheckMonitorsServlet extends BaseMonitorServlet {
         val errorMsg = new StringBuilder
         
         val nameOpt = param("monitor")
-        val specs = filterSpecs(nameOpt)
+        val specs = filterSpecs(config, nameOpt)
 
         specs.foreach { spec =>
         	try {
-        		status = monStat.reportStatus(spec)
+        		status = monStat.reportStatus(StatusRequest(spec, config.properties))
         	} catch {
 	        	case mse:MonitorStatusException => 
 	        	    errorMsg append mse.getMessage() append '\n'
@@ -43,8 +46,7 @@ class CheckMonitorsServlet extends BaseMonitorServlet {
         }
     }
     
-    private def filterSpecs(nameOpt:Option[String]) = {
-    	import DashboardSystem._
+    private def filterSpecs(config:MonitorsConfig, nameOpt:Option[String]) = {
     	
         if (nameOpt.isDefined) { 
             val nameFilter = nameOpt.get

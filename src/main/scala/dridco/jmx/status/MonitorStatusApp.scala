@@ -33,7 +33,7 @@ object MonitorStatusApp extends App {
 		try {
 			val statusApp = new MonitorStatusApp()
 			val connSpec = MonitorConnectionSpec(args(JMX_URL_POS), auth, Seq(mbean), true)
-			status = statusApp.reportStatus( connSpec )
+			status = statusApp.reportStatus( StatusRequest(connSpec) )
 		} catch {
 		    case e =>
 		        status = "FAILURE: " + e.getMessage()
@@ -73,9 +73,10 @@ class MonitorStatusApp {
     
     val SUCCESS = "OK"
 
-    def reportStatus(connSpec:MonitorConnectionSpec) = {
+    def reportStatus(request:StatusRequest) = {
         
-        val monitor = connSpec.monitors(0)
+        val spec = request.connectionSpec
+        val monitor = spec.monitors(0)
 
         val statusReporter = monitor match {
 	    	case "sensei" => new SenseiStatus()
@@ -83,14 +84,14 @@ class MonitorStatusApp {
 	    	case "kafka" => new KafkaStatus()
     	}
     	
-    	val status = statusReporter.reportResult(connSpec)
+    	val status = statusReporter.reportResult(request)
     			
 		if (status.valid) {
 			SUCCESS
 		} else {
-		    val infoMsg = "[monitor: " + monitor + ", url: " + connSpec.url + "]"
-		    if (status.message.isDefined) {
-			    val statusMsg = status.message.get
+		    val infoMsg = "[monitor: " + monitor + ", url: " + spec.url + "]"
+		    if (!status.messages.isEmpty) {
+			    val statusMsg = status.messages.mkString("\n")
 	    		val completeMsg = statusMsg + " " + infoMsg  
 				throw new MonitorStatusException(completeMsg)
 			} else {

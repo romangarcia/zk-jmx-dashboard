@@ -1,5 +1,7 @@
 <!-- <connectors username="monitorRole" password="testing"> -->
 <connectors>
+	<property name="clusterName" value="testCluster" />
+	
 	<connector url="localhost:18888" type="zookeeper" />
 	<connector url="localhost:18889" type="kafka" />
 	<connector url="localhost:18890" type="sensei" />

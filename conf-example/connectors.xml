@@ -1,6 +1,11 @@
 <connectors username="monitorRole" password="testing">
+
+	<!-- REQUIRED FOR TOMCAT type. Minimum nodes that need to be available for tomcat -->
+	<property name="minAvailableNodes" value="2" />
+	
 	<connector url="weba111:9001" type="sensei" />
 	<connector url="weba111:9002" type="kafka" username="controlRole" />
 	<connector url="weba111:9003" type="zookeeper" password="p4ssw0rd" />
 	<connector url="weba111:9004" type="zookeeper" enabled="false" />
+	<connector url="weba111:9005" type="tomcat" />
 </connectors>

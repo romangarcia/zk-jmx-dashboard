@@ -4,7 +4,7 @@ import javax.management.remote.JMXConnector
 import dridco.jmx.monitor.JmxCredentials
 import dridco.jmx.monitor.MonitorConnectionSpec
 
-object MonitorStatusApp extends App {
+object MonitorStatusReader extends App {
     val BEAN_NAME_POS = 0
     val JMX_URL_POS = 1
     val JMX_USERNAME_POS = 2
@@ -27,13 +27,13 @@ object MonitorStatusApp extends App {
             
     val mbean = args(BEAN_NAME_POS)
 
-    def start() {
+    def start()  = {
     	var exitCode = 0
 		var status = ""
 		try {
-			val statusApp = new MonitorStatusApp()
-			val connSpec = MonitorConnectionSpec(args(JMX_URL_POS), auth, Seq(mbean), true)
-			status = statusApp.reportStatus( StatusRequest(connSpec) )
+		    val statusApp = new MonitorStatusReader()
+		    val connSpec = MonitorConnectionSpec(args(JMX_URL_POS), auth, Seq(mbean), true)
+		    status = statusApp.reportStatus( StatusRequest(connSpec) )
 		} catch {
 		    case e =>
 		        status = "FAILURE: " + e.getMessage()
@@ -68,8 +68,8 @@ object MonitorStatusApp extends App {
     
 }
 
-class MonitorStatusApp {
-    import MonitorStatusApp._
+class MonitorStatusReader {
+    import MonitorStatusReader._
     
     val SUCCESS = "OK"
 
@@ -82,6 +82,7 @@ class MonitorStatusApp {
 	    	case "sensei" => new SenseiStatus()
 	    	case "zookeeper" => new ZookeeperStatus()
 	    	case "kafka" => new KafkaStatus()
+	    	case "tomcat" => new FrontendStatus()
     	}
     	
     	val status = statusReporter.reportResult(request)

@@ -1,8 +1,11 @@
 <!-- <connectors username="monitorRole" password="testing"> -->
 <connectors>
-	<property name="clusterName" value="testCluster" />
+	<!-- minimum nodes that need to be available for tomcat -->
+	<property name="minAvailableNodes" value="2" />
 	
 	<connector url="localhost:18888" type="zookeeper" />
 	<connector url="localhost:18889" type="kafka" />
 	<connector url="localhost:18890" type="sensei" />
+	<connector url="localhost:18891" type="tomcat" />
+
 </connectors>

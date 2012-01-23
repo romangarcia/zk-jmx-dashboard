@@ -2,7 +2,7 @@ package dridco.jmx.rest
 import dridco.jmx.monitor.JmxCredentials
 import javax.servlet.http.HttpServletRequest
 import dridco.jmx.status.MonitorStatusException
-import dridco.jmx.status.MonitorStatusApp
+import dridco.jmx.status.MonitorStatusReader
 import javax.servlet.http.HttpServletResponse
 import dridco.jmx.DashboardSystem
 import dridco.jmx.monitor.MonitorConnectionSpec
@@ -16,7 +16,7 @@ class CheckMonitorsServlet extends BaseMonitorServlet {
         implicit val request = req
         implicit val response = resp
         
-        val monStat = new MonitorStatusApp()
+        val monStat = new MonitorStatusReader()
         val out = resp.getWriter()
 
         var status = "OK"
@@ -24,6 +24,10 @@ class CheckMonitorsServlet extends BaseMonitorServlet {
         
         val nameOpt = param("monitor")
         val specs = filterSpecs(config, nameOpt)
+
+        if (specs.isEmpty) {
+        	errorMsg append "No connectors available!"
+        }
 
         specs.foreach { spec =>
         	try {

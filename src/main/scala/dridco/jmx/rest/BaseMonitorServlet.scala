@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse
 import dridco.jmx.monitor.JmxCredentials
 import dridco.jmx.monitor.JmxMonitorConnector
 import dridco.jmx.monitor.MonitorConnectionSpec
-import dridco.jmx.status.MonitorStatusApp
+import dridco.jmx.status.MonitorStatusReader
 import dridco.jmx.status.MonitorStatusException
 
 class BaseMonitorServlet extends HttpServlet {
